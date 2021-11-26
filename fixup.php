@@ -36,7 +36,7 @@ foreach ( $tasks as $task ) {
 		// Modify the task
 		$humanDescription = trim( str_replace( $changeId . ': ', '', $humanDescription ) );
 
-		$cmd = sprintf( 'task %s modify "%s" phab:%s gerrit:%d project:%s',
+		$cmd = sprintf( 'task %s modify "%s" phab:%s gerrit:%d project:%s +codereview',
 			$task['uuid'],
 			$humanDescription,
 			$bug, (int)$changeId,
@@ -62,6 +62,9 @@ foreach ( $tasks as $task ) {
 			$phid
 		);
 		echo "running $cmd\n";
+		shell_exec( $cmd );
+		echo "running $cmd\n";
+		$cmd = sprintf( 'task %s annotate "%s"', $task['uuid'], $task['description'] );
 		shell_exec( $cmd );
 	}
 
